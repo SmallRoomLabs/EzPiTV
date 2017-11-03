@@ -1,3 +1,3 @@
 # EzPiTV
-## RasberryPi image player using Google Slides
+## RaspberryPi image player using Google Slides
 
