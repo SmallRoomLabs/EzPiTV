@@ -11,7 +11,7 @@ var page = require('webpage').create();
 page.viewportSize = { width: 1080, height: 1920 };
 page.open(url, function() {
   setTimeout(function(){ 
-    page.render(filename);
+    page.render(filename, {format: 'ppm'});
     phantom.exit();
   }, 5000); 
 });
