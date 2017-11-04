@@ -19,6 +19,9 @@ sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQH4TEPWR08CdRiYE0DR5_
 # NO CHANGES BELOW THIS POINT SHOULD BE NECESSARY
 ##############################################################################
 
+# HD-TV resolution with 16-bit/565 color mode
+fbset -g 1080 1920 1080 1920 16
+
 # Turn off blinking cursor
 echo 0 | sudo tee -a /sys/class/graphics/fbcon/cursor_blink
 
