@@ -2,6 +2,11 @@
 
 #--------------------------------------------------------------------------------------
 
+# Have the SSH deamon start automatically
+update-rc.d ssh enable
+
+#--------------------------------------------------------------------------------------
+
 # Make sure we get the latest and greatest packages
 apt-get update
 apt-get upgrade -y
@@ -15,10 +20,7 @@ apt-get install -y joe git nmap ngrep
 #--------------------------------------------------------------------------------------
 
 # Disable screen blanking/saver
-cat << EOF > /boot/cmdline.txt
-dwc_otg.lpm_enable=0 consoleblank=0 console=serial0,115200 console=tty1 root=PARTUUID=e0b78139-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
-disable_overscan=1
-EOF
+sed -i s/$/\ consoleblank=0/ /boot/cmdline.txt
 
 #--------------------------------------------------------------------------------------
 
@@ -85,10 +87,5 @@ display_rotate=1
 # Enable audio (loads snd_bcm2835)
 #dtparam=audio=on
 EOF
-
-#--------------------------------------------------------------------------------------
-
-# Make sure that the SSH deamon starts automatically
-update-rc.d ssh enable
 
 #--------------------------------------------------------------------------------------
