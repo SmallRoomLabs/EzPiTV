@@ -12,7 +12,7 @@ apt-get update
 apt-get upgrade -y
 
 # Requred packages for EzPiTV
-apt-get install -y curl ffmpeg phantomjs figlet
+apt-get install -y curl ffmpeg phantomjs imagemagick figlet
 
 # Some extra convenience packages
 apt-get install -y joe git nmap ngrep 
