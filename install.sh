@@ -89,3 +89,5 @@ display_rotate=1
 EOF
 
 #--------------------------------------------------------------------------------------
+
+sudo sed -i '$i/home/pi/drawscreen.sh &' /etc/rc.local
