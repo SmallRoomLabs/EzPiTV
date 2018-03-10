@@ -25,10 +25,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 
 int main(int argc, char* argv[]) {
 
@@ -42,7 +43,7 @@ int main(int argc, char* argv[]) {
 		fp = fopen(argv[1], "r");
 		if (fp == 0) {
 			errval = errno;
-			fprintf(stderr, "Error opening file %s (errno=%d).\n", errval);
+			fprintf(stderr, "Error opening file %s (errno=%d).\n", argv[1], errval);
 			return errval;
 		}
 	}
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
 	int height = -1;
 	int depth = -1;
 
-	if ( (fread(magic, 2, 1, fp) == 1) 
+	if ( (fread(magic, 2, 1, fp) == 1)
 		&& (memcmp("P6", magic, 2) == 0) )
 	{
 		//fprintf(stderr, "Got P6 ppm.\n");
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
 			//fprintf(stderr, "w=%d, h=%d\n", width, height);
 		}
 		else {
-			fprintf(stderr, "Read size failed.\n");
+			//fprintf(stderr, "Read size failed.\n");
 			width = height = -1;
 		}
 
@@ -70,12 +71,12 @@ int main(int argc, char* argv[]) {
 		}
 		else
 		{
-			fprintf(stderr, "Read depth failed.\n");
+			//fprintf(stderr, "Read depth failed.\n");
 			depth = -1;
 		}
 
 		if (depth != 255) {
-			fprintf(stderr, "Only 255 depth supported.\n");
+			//fprintf(stderr, "Only 255 depth supported.\n");
 			depth = -1;
 		}
 
@@ -90,39 +91,36 @@ int main(int argc, char* argv[]) {
 
 		int y;
 		int x;
-		unsigned char rgb[3];
+		unsigned char rgb[3*1080];
+		unsigned char out[2*1080+16];
+		int p1;
+		int p2;
 
-		for (y = 0; y < height; y++) {
-			for (x = 0; x < width; x++) {
-				if (fread(rgb, 3, 1, fp) == 1) {
-					unsigned char r = rgb[0];
-					unsigned char g = rgb[1];
-					unsigned char b = rgb[2];
-					unsigned short rgb565 = ((r >> 3) << 11) + ((g >> 2) << 5) + (b >> 3);
-					unsigned char c1 = (rgb565 & 0xFF00) >> 8;
-					unsigned char c2 = (rgb565 & 0xFF);
-					fwrite(&c2, 1, 1, stdout);
-					fwrite(&c1, 1, 1, stdout);
-				}
-				else {
-					errval = errno;
-					fprintf(stderr, "Read data failed (errno=%d).\n", errval);
-					break;
-				}
+		for (p2=0; p2<2*1080+16; p2++) out[p2]=0;
+
+		for (y = 0; y < 1920; y++) {
+			if (fread(rgb, 1, 3*1080, fp)!=3*1080) {
+				errval = errno;
+				fprintf(stderr, "Read data failed (errno=%d).\n", errval);
+				return 0;
 			}
-			unsigned char c1=0;
-			for (int i=0; i<16; i++) fwrite(&c1,1,1,stdout); 
 
-			if (errval != 0)
-				break;	
+			p1=0;
+			p2=0;
+			for (x=0; x<1080; x++) {
+				unsigned char r = rgb[p1++];
+				unsigned char g = rgb[p1++];
+				unsigned char b = rgb[p1++];
+				unsigned short rgb565 = ((r >> 3) << 11) + ((g >> 2) << 5) + (b >> 3);
+				out[p2++] = (rgb565 & 0xFF);
+				out[p2++] = (rgb565 & 0xFF00) >> 8;
+			}
+			fwrite(out, 1, 1080*2+16, stdout);
 
-		}	
+		}
 
 	}
 
-	if (fp != stdin) {
-		fclose(fp);
-	}
-
-	return errval;
+	if (fp!=stdin) fclose(fp);
+	return 0;
 }
