@@ -8,7 +8,7 @@ apt-get install -y dropbear
 
 # Use busybox logger instead of rsyslog
 apt-get install -y busybox-syslogd
-dpkg —-purge logrotate dphys-swapfile rsyslog
+dpkg --purge logrotate dphys-swapfile rsyslog
 
 # Remove uneccessary packages
 dpkg --purge avahi-daemon libnss-mdns bluez pi-bluetooth bluez-firmware triggerhappy libraspberrypi-doc
