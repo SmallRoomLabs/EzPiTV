@@ -4,6 +4,14 @@ export LC_ALL=C
 
 #--------------------------------------------------------------------------------------
 
+# Change repo
+sed -i "s/mirrordirector.raspbian.org/mirror.ox.ac.uk\/sites\/archive.raspbian.org\/archive/" /etc/apt/sources.list
+false; until [[ $? -eq 0 ]]; do
+  apt-get update
+done
+
+#
+
 # Use dropbear instead of openssh
 apt-get -y remove openssh-server
 false; until [[ $? -eq 0 ]]; do
@@ -27,6 +35,14 @@ dpkg --purge nfs-common libnfsidmap2:armhf
 dpkg --purge raspi-config lua5.1 luajit libluajit-5.1-common
 dpkg --purge openssh-sftp-server openssh-client openssh-server ssh
 
+# Clean up leftovers
+apt -y autoremove
+
+# Make sure we have the latest and greatest packages
+false; until [[ $? -eq 0 ]]; do
+  apt-get upgrade -y
+done
+
 # Install some requred packages for EzPiTV
 false; until [[ $? -eq 0 ]]; do
   apt-get install -y joe
@@ -46,18 +62,6 @@ done
 
 false; until [[ $? -eq 0 ]]; do
   apt-get install -y imagemagick
-done
-
-# Clean up leftovers
-apt -y autoremove
-
-# Make sure we get the latest and greatest packages
-false; until [[ $? -eq 0 ]]; do
-  apt-get update
-done
-
-false; until [[ $? -eq 0 ]]; do
-  apt-get upgrade -y
 done
 
 # Remove cached packages
