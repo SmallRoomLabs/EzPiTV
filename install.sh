@@ -7,6 +7,12 @@ update-rc.d ssh enable
 
 #--------------------------------------------------------------------------------------
 
+# Create a ramdisk for current image
+mkdir -p /mnt/tmpfs
+mount -o size=7M -t tmpfs none /mnt/tmpfs
+
+#--------------------------------------------------------------------------------------
+
 # Make sure we get the latest and greatest packages
 apt-get update
 apt-get upgrade -y
