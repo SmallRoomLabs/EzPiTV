@@ -4,16 +4,19 @@
 
 # Use dropbear instead of openssh
 apt-get -y remove openssh-server
+
 apt-get install -y dropbear
+echo "STATUS DROPBEAR " $?
 
 # Use busybox logger instead of rsyslog
 apt-get install -y busybox-syslogd
+echo "STATUS BUSYBOX " $?
 dpkg --purge logrotate dphys-swapfile rsyslog
 
 # Remove uneccessary packages
 dpkg --purge avahi-daemon libnss-mdns bluez pi-bluetooth bluez-firmware triggerhappy libraspberrypi-doc
 dpkg --purge python-rpi.gpio python python2.7 dh-python apt-listchanges lsb-release python3-apt python3 python3.5
-dpkg --purge python-apt-common python-apt-common python-minimal python2.7-minimal python3-minimal python3.5-minimal
+dpkg --purge python-apt-common python-minimal python2.7-minimal python3-minimal python3.5-minimal
 dpkg --purge gdb libpython2.7:armhf libpython3:armhf libpython3.5:armhf
 dpkg --purge libpython-stdlib:armhf libpython2.7-stdlib:armhf libpython3-stdlib:armhf libpython3.5-stdlib:armhf
 dpkg --purge libpython2.7-minimal:armhf libpython3.5-minimal:armhf
@@ -22,17 +25,28 @@ dpkg --purge raspi-config lua5.1 luajit libluajit-5.1-common
 dpkg --purge openssh-client openssh-server ssh
 
 # Install some requred packages for EzPiTV
-apt-get install -y joe curl ffmpeg phantomjs imagemagick figlet
+apt-get install -y joe
+echo "STATUS JOE " $?
+apt-get install -y curl
+echo "STATUS CURL " $?
+apt-get install -y ffmpeg
+echo "STATUS FFMPEG " $?
+apt-get install -y phantomjs 
+echo "STATUS PHANTOMJS " $?
+apt-get install -y imagemagick
+echo "STATUS IMAGEMAGICK " $?
 
 # Clean up leftovers
 apt -y autoremove
+echo "STATUS AUTOREMOVE " $?
 
 # Make sure we get the latest and greatest packages
 apt-get update
-#apt-get upgrade -y
+echo "STATUS UPDATE " $?
+apt-get UPGRADE -y
 
-# Remove cached pakages
-apt-get clean
+# Remove cached packages
+#apt-get clean
 
 #--------------------------------------------------------------------------------------
 
