@@ -22,7 +22,7 @@ dpkg --purge libpython-stdlib:armhf libpython2.7-stdlib:armhf libpython3-stdlib:
 dpkg --purge libpython2.7-minimal:armhf libpython3.5-minimal:armhf
 dpkg --purge nfs-common libnfsidmap2:armhf
 dpkg --purge raspi-config lua5.1 luajit libluajit-5.1-common
-dpkg --purge openssh-client openssh-server ssh
+dpkg --purge openssh-sftp-server openssh-client openssh-server ssh
 
 # Install some requred packages for EzPiTV
 apt-get install -y joe
