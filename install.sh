@@ -13,6 +13,11 @@ mount -o size=7M -t tmpfs none /mnt/tmpfs
 
 #--------------------------------------------------------------------------------------
 
+# Remove uneccessary packages
+dpkg --purge triggerhappy 
+dpkg --purge avahi-daemon libnss-mdns 
+dpkg --purge bluez pi-bluetooth bluez-firmware
+
 # Make sure we get the latest and greatest packages
 apt-get update
 apt-get upgrade -y
@@ -22,6 +27,14 @@ apt-get install -y curl ffmpeg phantomjs imagemagick figlet
 
 # Some extra convenience packages
 apt-get install -y joe git nmap ngrep 
+
+# Use dropbear instead of openssh
+apt-get install -y dropbear
+sed -i s/NO_START=1/NO_START=0/ /etc/default/dropbear
+/etc/init.d/ssh stop
+/etc/init.d/dropbear start
+apt-get -y remove openssh-server
+apt -y autoremove
 
 #--------------------------------------------------------------------------------------
 
