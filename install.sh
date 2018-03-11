@@ -1,16 +1,19 @@
 #!/bin/bash
 
+export LC_ALL=C
+
 #--------------------------------------------------------------------------------------
 
 # Use dropbear instead of openssh
 apt-get -y remove openssh-server
-
-apt-get install -y dropbear
-echo "STATUS DROPBEAR " $?
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y dropbear
+done
 
 # Use busybox logger instead of rsyslog
-apt-get install -y busybox-syslogd
-echo "STATUS BUSYBOX " $?
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y busybox-syslogd
+done
 dpkg --purge logrotate dphys-swapfile rsyslog
 
 # Remove uneccessary packages
@@ -25,25 +28,37 @@ dpkg --purge raspi-config lua5.1 luajit libluajit-5.1-common
 dpkg --purge openssh-sftp-server openssh-client openssh-server ssh
 
 # Install some requred packages for EzPiTV
-apt-get install -y joe
-echo "STATUS JOE " $?
-apt-get install -y curl
-echo "STATUS CURL " $?
-apt-get install -y ffmpeg
-echo "STATUS FFMPEG " $?
-apt-get install -y phantomjs 
-echo "STATUS PHANTOMJS " $?
-apt-get install -y imagemagick
-echo "STATUS IMAGEMAGICK " $?
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y joe
+done
+
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y curl
+done
+
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y ffmpeg
+done
+
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y phantomjs 
+done
+
+false; until [[ $? -eq 0 ]]; do
+  apt-get install -y imagemagick
+done
 
 # Clean up leftovers
 apt -y autoremove
-echo "STATUS AUTOREMOVE " $?
 
 # Make sure we get the latest and greatest packages
-apt-get update
-echo "STATUS UPDATE " $?
-apt-get upgrade -y
+false; until [[ $? -eq 0 ]]; do
+  apt-get update
+done
+
+false; until [[ $? -eq 0 ]]; do
+  apt-get upgrade -y
+done
 
 # Remove cached packages
 apt-get clean
