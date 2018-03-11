@@ -6,6 +6,10 @@
 apt-get -y remove openssh-server
 apt-get install -y dropbear
 
+# Use busybox logger instead of rsyslog
+apt-get install -y busybox-syslogd
+dpkg —-purge logrotate dphys-swapfile rsyslog
+
 # Remove uneccessary packages
 dpkg --purge avahi-daemon libnss-mdns bluez pi-bluetooth bluez-firmware triggerhappy libraspberrypi-doc
 dpkg --purge python-rpi.gpio python python2.7 dh-python apt-listchanges lsb-release python3-apt python3 python3.5
