@@ -2,8 +2,38 @@
 
 #--------------------------------------------------------------------------------------
 
-# Have the SSH deamon start automatically
-update-rc.d ssh enable
+# Use dropbear instead of openssh
+apt-get -y remove openssh-server
+apt-get install -y dropbear
+
+# Remove uneccessary packages
+dpkg --purge avahi-daemon libnss-mdns bluez pi-bluetooth bluez-firmware triggerhappy libraspberrypi-doc
+dpkg --purge python-rpi.gpio python python2.7 dh-python apt-listchanges lsb-release python3-apt python3 python3.5
+dpkg --purge python-apt-common python-apt-common python-minimal python2.7-minimal python3-minimal python3.5-minimal
+dpkg --purge gdb libpython2.7:armhf libpython3:armhf libpython3.5:armhf
+dpkg --purge libpython-stdlib:armhf libpython2.7-stdlib:armhf libpython3-stdlib:armhf libpython3.5-stdlib:armhf
+dpkg --purge libpython2.7-minimal:armhf libpython3.5-minimal:armhf
+dpkg --purge nfs-common libnfsidmap2:armhf
+dpkg --purge raspi-config lua5.1 luajit libluajit-5.1-common
+dpkg --purge openssh-client openssh-server ssh
+
+# Install some requred packages for EzPiTV
+apt-get install -y joe curl ffmpeg phantomjs imagemagick figlet
+
+# Clean up leftovers
+apt -y autoremove
+
+# Make sure we get the latest and greatest packages
+apt-get update
+#apt-get upgrade -y
+
+# Remove cached pakages
+apt-get clean
+
+#--------------------------------------------------------------------------------------
+
+# Disable screen blanking/saver
+sed -i s/$/\ consoleblank=0/ /boot/cmdline.txt
 
 #--------------------------------------------------------------------------------------
 
@@ -11,35 +41,7 @@ update-rc.d ssh enable
 mkdir -p /mnt/tmpfs
 mount -o size=7M -t tmpfs none /mnt/tmpfs
 
-#--------------------------------------------------------------------------------------
-
-# Remove uneccessary packages
-dpkg --purge triggerhappy 
-dpkg --purge avahi-daemon libnss-mdns 
-dpkg --purge bluez pi-bluetooth bluez-firmware
-
-# Make sure we get the latest and greatest packages
-apt-get update
-apt-get upgrade -y
-
-# Requred packages for EzPiTV
-apt-get install -y curl ffmpeg phantomjs imagemagick figlet
-
-# Some extra convenience packages
-apt-get install -y joe git nmap ngrep 
-
-# Use dropbear instead of openssh
-apt-get install -y dropbear
-sed -i s/NO_START=1/NO_START=0/ /etc/default/dropbear
-/etc/init.d/ssh stop
-/etc/init.d/dropbear start
-apt-get -y remove openssh-server
-apt -y autoremove
-
-#--------------------------------------------------------------------------------------
-
-# Disable screen blanking/saver
-sed -i s/$/\ consoleblank=0/ /boot/cmdline.txt
+exit
 
 #--------------------------------------------------------------------------------------
 
