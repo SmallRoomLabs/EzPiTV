@@ -150,4 +150,10 @@ EOF
 
 #--------------------------------------------------------------------------------------
 
+wget https://github.com/SmallRoomLabs/EzPiTV/archive/master.zip
+unzip master.zip
+rmdir EzPiTV-master/   
+   
+#--------------------------------------------------------------------------------------
+
 sudo sed -i '$i/home/pi/drawscreen.sh &' /etc/rc.local
