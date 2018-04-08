@@ -49,6 +49,10 @@ false; until [[ $? -eq 0 ]]; do
 done
 
 false; until [[ $? -eq 0 ]]; do
+  apt-get install -y git
+done
+
+false; until [[ $? -eq 0 ]]; do
   apt-get install -y curl
 done
 
@@ -66,7 +70,6 @@ done
 
 # Remove cached packages
 apt-get clean
-exit
 
 #--------------------------------------------------------------------------------------
 
