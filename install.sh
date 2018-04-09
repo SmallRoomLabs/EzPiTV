@@ -80,6 +80,7 @@ sed -i s/$/\ consoleblank=0/ /boot/cmdline.txt
 
 # Create a ramdisk for current image
 mkdir -p /mnt/tmpfs
+chmod 0777 /mnt/tmpfs/
 mount -o size=7M -t tmpfs none /mnt/tmpfs
 
 #--------------------------------------------------------------------------------------
@@ -151,7 +152,10 @@ EOF
 #--------------------------------------------------------------------------------------
 
 git clone https://github.com/SmallRoomLabs/EzPiTV.git
-gcc -O2 -o ppm565 ppmto565.c
+chown -R pi:pi *
+mv EzPiTV/* .
+rm -rf EzPiTV
+gcc -O2 -o ppmto565 ppmto565.c
 
 #--------------------------------------------------------------------------------------
 
