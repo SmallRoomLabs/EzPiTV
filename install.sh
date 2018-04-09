@@ -154,7 +154,10 @@ wget https://github.com/SmallRoomLabs/EzPiTV/archive/master.zip
 unzip master.zip
 mv EzPiTV-master/* .
 rm -rf EzPiTV-master/   
-   
+chmod 0755 *.sh
+chown -R pi:pi *
+gcc -O2 -o ./ppm565 ppmto565/ppmto565.c
+
 #--------------------------------------------------------------------------------------
 
 sed -i '$i/home/pi/drawscreen.sh &' /etc/rc.local
