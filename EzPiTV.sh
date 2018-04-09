@@ -12,8 +12,7 @@
 # CONFIGS
 #
 
-sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQH4TEPWR08CdRiYE0DR5_bDOl36gbaE3uS-zZtloM7fSMP_99vSr3z5vHnTN9nIRM2PKlAtDCrCOtR/pub?output=tsv"
-
+sheetURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSU6SOY2Pz2GroFuK5mWF4_4wxhwJBrPmjAJYArjR4olAfUVryFyYIyO57ZHG475RU4FDs9oXiXDSRs/pub?output=tsv"
 
 ##############################################################################
 # NO CHANGES BELOW THIS POINT SHOULD BE NECESSARY
@@ -55,23 +54,25 @@ else
 fi
 
 
+#
 # Retreive the list of slides to show
-skip=1
+#
+cnt=0
 IFS='' ; while read line ; do
-	if [[ "$skip" -eq 1 ]]; then
-		skip=0
+	((count++))
+	if [ $count -le 2 ]; then
 		continue
 	fi
+	
 	echo "$line" | hexdump -C
 	active=$(echo "$line" | cut -f1)
 	url=$(echo "$line" | cut -f2)
 	comment=$(echo "$line" | cut -f3)
 	if [[ $active == "Y" || $active == "y" ]]; then
-		echo Handling $comment
+		echo Fetching and Rendering $comment
 		filename=$(echo "$url" | md5sum | awk '{print $1}')
 		echo Filename $filename
 		phantomjs render.js "$url" $PREFIX-$filename.ppm
-		ppmto565/ppmto565 $PREFIX-$filename.ppm > /dev/fb0
 	fi
 done < <(curl -s $sheetURL; echo)
 
