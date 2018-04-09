@@ -160,3 +160,8 @@ gcc -O2 -o ppmto565 ppmto565.c
 #--------------------------------------------------------------------------------------
 
 sed -i '$i/home/pi/drawscreen.sh &' /etc/rc.local
+crontab -l | { cat; echo "*/5 * * * * /home/pi/EzPiTV.sh >/dev/null 2>&1"; } | crontab -
+
+#--------------------------------------------------------------------------------------
+
+sync; sleep 1; sync; reboot now
