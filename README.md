@@ -23,5 +23,6 @@ network={
 - Connect with SSH to the address displayed at the bottom of the screen using pi/raspberry
 - Execute the installation script with
 ```
-wget -O - "https://raw.githubusercontent.com/SmallRoomLabs/EzPiTV/master/install.sh?token=AAT2zt7V28Xz80O6aMWoUcE1YQAkhgluks5aqDc8wA%3D%3D" | sudo bash```
+wget -O - "https://raw.githubusercontent.com/SmallRoomLabs/EzPiTV/master/install.sh" | sudo bash
+```
 
